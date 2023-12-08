@@ -1,17 +1,34 @@
+// src/index.js or src/index.jsx
+
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './redux/store'; // Import the store directly, not as a function
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { setComments } from './redux/commentsSlice';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
+// Load state from localStorage
+// src/index.js or src/index.jsx
+
+// src/index.js or src/index.jsx
+
+// Load state from localStorage
+const persistedState = localStorage.getItem('reduxState')
+  ? JSON.parse(localStorage.getItem('reduxState'))
+  : {};
+
+// Update the Redux store with the persisted state
+store.dispatch(setComments(persistedState?.comments?.comments));
+
+// Save state to localStorage whenever the store changes
+store.subscribe(() => {
+  const currentState = store.getState();
+  localStorage.setItem('reduxState', JSON.stringify({ comments: currentState?.comments }));
+});
+
+ReactDOM.render(
+  <Provider store={store}>
     <App />
-  </React.StrictMode>
+  </Provider>,
+  document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
