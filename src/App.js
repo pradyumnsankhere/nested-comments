@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "./redux/commentsSlice";
 import Comment from "./components/Comment";
@@ -6,11 +6,11 @@ import CommentForm from "./components/CommentForm";
 import { Header } from "./common/Header";
 import { PostContent } from "./common/PostContent";
 import LoginSignupForm from "./components/Signup";
+import { selectIsAuthenticated, selectUser, logout, setUser } from "./redux/authSlice";
 
 const App = () => {
-  const [user, setUser] = useState({}); // Store user info in state
-  const [authenticated, setAuthenticated] = useState(false);
-
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
   const comments = useSelector((state) => state.comments.comments);
   const dispatch = useDispatch();
 
@@ -21,13 +21,13 @@ const App = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setAuthenticated(true)
+      dispatch(setUser(JSON.parse(storedUser)));
     }
-  }, []);
+  }, [dispatch]);
+console.log(user,"user")
   return (
     <div>
-      {user&&!!authenticated ? (
+      {isAuthenticated ? (
         <div>
           <Header user={user} />
           <PostContent
@@ -37,19 +37,26 @@ const App = () => {
             }
           />
           <CommentForm onComment={handleComment} />
-          {[...comments].reverse()?.map((comment) => (
-            <Comment
-              user={user}
-              key={comment.id}
-              comment={comment}
-              bg="#EDF5F8"
-              showReplySection={true}
-            />
-          ))}
+          {comments &&
+          (Object.keys(comments).length > 0 || comments.length > 0) ? (
+            [...comments]
+              .reverse()
+              .map((comment) => (
+                <Comment
+                  user={user}
+                  key={comment.id}
+                  comment={comment}
+                  bg="#EDF5F8"
+                  showReplySection={true}
+                />
+              ))
+          ) : (
+            <p>No comments available</p>
+          )}
         </div>
       ) : (
         <div>
-          <LoginSignupForm setUser={setUser} setAuthenticated={setAuthenticated}/>
+          <LoginSignupForm />
         </div>
       )}
     </div>

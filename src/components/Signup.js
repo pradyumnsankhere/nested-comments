@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { TextField, Button, Container, Typography, Link } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/authSlice";
 
-const LoginSignupForm = ({ setUser, setAuthenticated }) => {
-  const [username, setusername] = useState("");
+const LoginSignupForm = () => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
-    setusername("");
+    setUsername("");
     setPassword("");
-
     setError("");
   };
 
@@ -20,15 +22,13 @@ const LoginSignupForm = ({ setUser, setAuthenticated }) => {
 
     if (isLogin) {
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      console.log("Stored User:", storedUser);
 
       if (
         storedUser &&
         storedUser?.username === username &&
         storedUser?.password === password
       ) {
-        setAuthenticated(true);
-        setUser(storedUser);
+        dispatch(setUser(storedUser));
       } else {
         setError("Invalid username or password. Please try again.");
       }
@@ -36,8 +36,6 @@ const LoginSignupForm = ({ setUser, setAuthenticated }) => {
       const newUser = { username, password };
       localStorage.setItem("user", JSON.stringify(newUser));
       handleToggle();
-
-      console.log("User Signed Up:", newUser);
     }
   };
 
@@ -54,7 +52,7 @@ const LoginSignupForm = ({ setUser, setAuthenticated }) => {
           fullWidth
           required
           value={username}
-          onChange={(e) => setusername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
           label="Password"
