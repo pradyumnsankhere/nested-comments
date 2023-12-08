@@ -7,10 +7,10 @@ export const PostContent = ({ title, body }) => {
     <div>
       <Box
         sx={{
-            pt: 1,
-            pb:1,
-            pl: 3,
-            pr: 3,
+          pt: 1,
+          pb: 1,
+          pl: 3,
+          pr: 3,
           borderRadius: 2,
           bgcolor: "background.default",
           fontSize: "14px",
@@ -40,22 +40,20 @@ export const PostContent = ({ title, body }) => {
 
       <Box
         sx={{
-            pt: 2,
-            pb:1,
-            pl: 3,
-            pr: 3,
+          pt: 2,
+          pb: 1,
+          pl: 3,
+          pr: 3,
           borderRadius: 2,
           bgcolor: "background.default",
           fontSize: "14px",
           color: "#727272",
-          fontWeight:600
+          fontWeight: 600,
         }}
       >
-<div>Comments</div>
-
-        </Box>
-        <MuiDivider margin={"7px 0px 0px 0px"} />
-
+        <div>Comments</div>
+      </Box>
+      <MuiDivider margin={"7px 0px 0px 0px"} />
     </div>
   );
 };

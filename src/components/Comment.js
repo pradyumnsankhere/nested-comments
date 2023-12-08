@@ -22,22 +22,20 @@ const Comment = ({ comment, user, bg, showReplySection }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const dispatch = useDispatch();
 
-  const [showReplies, setShowReplies] = useState(false);
+  const [showReplies, setShowReplies] = useState(!showReplySection);
 
   const handleReply = (reply) => {
     setShowReplies(true);
-    console.log(reply, "reep");
-
     dispatch(addReply({ commentId: comment.id, reply }));
     setShowReplyForm(false);
   };
-  console.log(comment.replies, "comment.replies");
   return (
     <div>
       <div>
         <Box
           sx={{
-            p: 2,
+            pl: 3,
+            pt:3,
             borderRadius: 2,
             bgcolor: "background.default",
             fontSize: "14px",
@@ -91,9 +89,9 @@ const Comment = ({ comment, user, bg, showReplySection }) => {
           <ReplyForm onReply={handleReply} />
         </div>
       )}
-      {showReplies && comment?.replies && comment?.replies?.length > 0 && (
+      {!!showReplies && comment?.replies && comment?.replies?.length > 0 && (
         <div style={{ marginLeft: "50px" }}>
-          {comment?.replies?.map((reply) => (
+          {[...comment?.replies]?.reverse()?.map((reply) => (
             <Comment
               user={user}
               from

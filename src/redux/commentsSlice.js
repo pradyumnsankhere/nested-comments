@@ -1,8 +1,4 @@
-// src/redux/commentsSlice.js
-
-import { createSlice } from '@reduxjs/toolkit';
-
-
+import { createSlice } from "@reduxjs/toolkit";
 
 const findCommentById = (comments, commentId) => {
   for (const comment of comments) {
@@ -21,15 +17,13 @@ const findCommentById = (comments, commentId) => {
   return null;
 };
 
-
-
 const commentsSlice = createSlice({
-  name: 'comments',
+  name: "comments",
   initialState: { comments: [] },
   reducers: {
     addComment: (state, action) => {
       if (!state.comments) {
-        state.comments = []; // Ensure that state.comments is an array
+        state.comments = [];
       }
       state.comments.push(action.payload);
     },

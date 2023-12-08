@@ -14,7 +14,7 @@ const ReplyForm = ({ onReply }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Box sx={{ pl: 2, width: 300 }}>
+      <Box sx={{ pl: 2,pt:1, width: 300 }}>
         <TextField
           style={{ width: "100%" }}
           id="outlined-multiline-static"

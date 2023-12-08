@@ -5,19 +5,19 @@ import Comment from "./components/Comment";
 import CommentForm from "./components/CommentForm";
 import { Header } from "./common/Header";
 import { PostContent } from "./common/PostContent";
-import Login from "./components/Login";
 import LoginSignupForm from "./components/Signup";
 
 const App = () => {
-  const [user, setUser] = useState(null); // Store user info in state
+  const [user, setUser] = useState({}); // Store user info in state
   const [authenticated, setAuthenticated] = useState(false);
 
   const comments = useSelector((state) => state.comments.comments);
   const dispatch = useDispatch();
 
-  // console.log(comments, "comments");
+  const handleComment = (comment) => {
+    dispatch(addComment(comment));
+  };
 
-  // Check for user authentication on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -25,18 +25,11 @@ const App = () => {
       setAuthenticated(true)
     }
   }, []);
-
-  const handleComment = (comment) => {
-    dispatch(addComment(comment));
-  };
-
-
   return (
     <div>
       {user&&!!authenticated ? (
         <div>
           <Header user={user} />
-
           <PostContent
             title={"Celebrating New Year"}
             body={
@@ -44,7 +37,7 @@ const App = () => {
             }
           />
           <CommentForm onComment={handleComment} />
-          {comments?.map((comment) => (
+          {[...comments].reverse()?.map((comment) => (
             <Comment
               user={user}
               key={comment.id}
@@ -56,14 +49,7 @@ const App = () => {
         </div>
       ) : (
         <div>
-          {/* <p>Please login to comment</p>
-          <button onClick={() => handleLogin(prompt("Enter your username:"))}>
-            Login
-          </button> */}
-
-          {/* <Login handleLogin={handleLogin} /> */}
-
-          <LoginSignupForm setAuthenticated={setAuthenticated}/>
+          <LoginSignupForm setUser={setUser} setAuthenticated={setAuthenticated}/>
         </div>
       )}
     </div>
